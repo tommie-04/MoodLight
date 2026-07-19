@@ -2,15 +2,12 @@ import cv2
 from deepface import DeepFace
 from led_controller import LEDController
 
-# ---- 1. Configuration ----
-SERIAL_PORT = "/dev/tty.usbmodem101"   # your confirmed M0 port
+# Configuration
+SERIAL_PORT = "/dev/tty.usbmodem101"    # your confirmed M0 port
 CAMERA_INDEX = 0                        # confirmed working camera
 DEBOUNCE_THRESHOLD = 5                  # consecutive frames needed to confirm a state change
 
-# DeepFace outputs 7 emotions; we only have 5 LED states.
-# "sad" and "fear" are folded into NEUTRAL because they're the hardest
-# to reliably trigger/distinguish during a live demo.
-# "disgust" is used instead of "sad" for the blue LED.
+# DeepFace outputs 7 emotions
 EMOTION_MAP = {
     "happy": "HAPPY",
     "disgust": "DISGUST",
@@ -21,7 +18,7 @@ EMOTION_MAP = {
     "fear": "NEUTRAL",
 }
 
-# ---- 2. Set up webcam and LED controller ----
+# Set up webcam and LED controller
 cap = cv2.VideoCapture(CAMERA_INDEX)
 if not cap.isOpened():
     print("Error: could not open webcam.")
@@ -31,12 +28,12 @@ led = LEDController(SERIAL_PORT)
 
 print("MoodLight running. Press 'q' to quit.")
 
-# ---- 3. Debounce state ----
+# Debounce state
 candidate_emotion = None
 candidate_count = 0
 confirmed_emotion = "NEUTRAL"
 
-# ---- 4. Main loop ----
+# Main loop(Only on when emotions happen on 5 times in a row or more)
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -73,7 +70,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# ---- 5. Cleanup ----
+# Cleanup 
 cap.release()
 cv2.destroyAllWindows()
 led.close()
