@@ -5,8 +5,6 @@ import time
 class LEDController:
     """
     Wraps serial communication with the M0 board.
-    The Day 2 AI script only needs to import this class and call
-    send_emotion() — no need to worry about serial connection details.
     """
 
     def __init__(self, port, baud_rate=115200):
@@ -17,13 +15,10 @@ class LEDController:
     def send_emotion(self, emotion):
         """
         Only sends a command when the emotion actually changes.
-        This avoids flooding the serial connection with redundant
-        messages every frame, and keeps LED transitions clean instead
-        of flickering.
         """
         emotion = emotion.strip().upper()
         if emotion == self.last_emotion:
-            return  # No change, skip sending
+            return                          # No change, skip sending
         message = emotion + "\n"
         self.ser.write(message.encode("utf-8"))
         self.last_emotion = emotion
@@ -35,7 +30,7 @@ class LEDController:
 
 # ---- Standalone test when running this file directly ----
 if __name__ == "__main__":
-    SERIAL_PORT = "/dev/tty.usbmodem101"   # Confirmed M0 port on this machine
+    SERIAL_PORT = "/dev/tty.usbmodem101"    # should be your M0 port 
 
     controller = LEDController(SERIAL_PORT)
 

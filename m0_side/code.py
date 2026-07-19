@@ -4,11 +4,11 @@ import supervisor
 import sys
 
 
-# One color per state, including NEUTRAL now (no more "off" special case)
+# One color per state, including NEUTRAL
 led_pins = {
     
     "NEUTRAL":  board.D7,   # Clear/White LED — steady baseline state
-    "SAD":      board.D6,   # Blue LED
+    "DISGUST":      board.D6,   # Blue LED
     "HAPPY":    board.D5,   # Yellow LED
     "ANGRY":    board.D4,   # Red LED
     "SURPRISE": board.D3,   # Green LED
@@ -30,14 +30,14 @@ def set_emotion(emotion):
 # Start in NEUTRAL state so the lamp is never "dark" while waiting
 set_emotion("NEUTRAL")
 
-# ---- 3. Non-blocking serial read ----
+# Non-blocking serial read 
 def read_command():
     if supervisor.runtime.serial_bytes_available:
         line = sys.stdin.readline().strip().upper()
         return line
     return None
 
-# ---- 4. Main loop ----
+# Main loop
 print("MoodLight ready. Waiting for emotion commands...")
 
 while True:
@@ -47,6 +47,5 @@ while True:
         if command in leds:
             set_emotion(command)
         else:
-            # Unknown/unrecognized command -> fall back to NEUTRAL
-            # rather than leaving the previous state stuck
+            # Unknown/unrecognized command -> back to NEUTRAL
             set_emotion("NEUTRAL")

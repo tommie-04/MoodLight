@@ -3,7 +3,7 @@ from deepface import DeepFace
 from led_controller import LEDController
 
 # Configuration
-SERIAL_PORT = "/dev/tty.usbmodem101"    # your confirmed M0 port
+SERIAL_PORT = "/dev/tty.usbmodem101"    # should be your confirmed M0 port
 CAMERA_INDEX = 0                        # confirmed working camera
 DEBOUNCE_THRESHOLD = 5                  # consecutive frames needed to confirm a state change
 
