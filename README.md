@@ -69,4 +69,4 @@ MoodLight/
 4. Run: `python computer_side/moodlight_main.py`
 
 ## Team / Author
-UC San Diego SIPP Hackathon --- Tommie Liang
+UC San Diego SIPP Hackathon Team Wolves--- Tommie Liang
