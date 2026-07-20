@@ -22,7 +22,7 @@ Laptop
   -> Debounce logic (stabilizes rapid emotion flickers)
   -> pyserial (USB serial)
   -> Metro M0 Express (CircuitPython)
-  -> LEDs
+  -> LEDs + Photoresistor
 
 ## Emotion → LED Mapping
 | Emotion  | LED Color |
@@ -33,14 +33,17 @@ Laptop
 | Surprise | Green     |
 | Neutral (also covers sad/fear) | Clear/White |
 
-## Hardware
-- Adafruit Metro M0 Express
-- 5 LEDs (yellow / blue / red / green / clear) + resistor(330-ohm)
-- Breadboard, jumper wires
+## Environment Awareness
+In addition to emotion detection, MoodLight monitors ambient light using
+a photoresistor (5528) wired as a voltage divider into pin A0. If the
+room becomes too dark, the white LED blinks as a gentle reminder to turn
+on the lights — this takes priority over the emotion display to protect
+the user's eyes during long study sessions. 
 
 ## Hardware
 - Adafruit Metro M0 Express
-- 5 LEDs (yellow / blue / red / green / clear) + resistor
+- 5 LEDs (yellow / blue / red / green / clear) + 330-ohm resistor
+- Photoresistor (5528) + 10K-ohm resistor (voltage divider into A0)
 - Breadboard, jumper wires
 
 ![MoodLight wiring](images/wiring_setup.jpg)
@@ -52,8 +55,12 @@ MoodLight/
   - moodlight_main.py — main app: camera + AI + LED integration
   - led_controller.py — serial communication with the M0
   - emotion_detector.py — standalone emotion detection test
+  - list_cameras.py — utility to find the correct camera index
+  - debug_emotion_scores.py — utility to inspect raw DeepFace scores
 - m0_side/
-  - code.py — CircuitPython script running on the M0
+  - code.py — CircuitPython script running on the M0 (LEDs + photoresistor)
+- images/
+  - wiring_setup.jpg — hardware wiring photo
 - .gitignore
 - README.md
 
@@ -69,4 +76,4 @@ MoodLight/
 4. Run: `python computer_side/moodlight_main.py`
 
 ## Team / Author
-UC San Diego SIPP Hackathon Team Wolves--- Tommie Liang
+UC San Diego SIPP Hackathon Team Wolves --- Tommie Liang
